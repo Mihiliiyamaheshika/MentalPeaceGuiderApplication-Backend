@@ -1,0 +1,6 @@
+@MentalPeaceGuider_HostAddress = http://localhost:5010
+
+GET {{MentalPeaceGuider_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
