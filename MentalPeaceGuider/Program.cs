@@ -1,5 +1,6 @@
 using MentalPeaceGuider.Controllers; // Change this to your actual namespace where MentalPeaceContext lives
 using Microsoft.EntityFrameworkCore;
+using MentalPeaceGuider.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +11,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 // Add DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-);
+
 
 // Add services to the container.
 builder.Services.AddControllers();
