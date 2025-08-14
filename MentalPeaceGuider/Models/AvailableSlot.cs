@@ -1,9 +1,15 @@
-﻿public class AvailableSlot
-{
-    public int SlotID { get; set; }
-    public int CounselorID { get; set; }
-    public DateTime SlotDateTime { get; set; }
-    public bool IsBooked { get; set; }
+﻿using System;
+using MentalPeaceGuider.Models; // ensures Counselor is recognized
 
-    public Counselor Counselor { get; set; }
+namespace MentalPeaceGuider.Models
+{
+    public class AvailableSlot
+    {
+        public int SlotID { get; set; }
+        public int CounselorID { get; set; }
+        public DateTime SlotDateTime { get; set; }
+        public bool IsBooked { get; set; }
+
+        public Counselor Counselor { get; set; }
+    }
 }

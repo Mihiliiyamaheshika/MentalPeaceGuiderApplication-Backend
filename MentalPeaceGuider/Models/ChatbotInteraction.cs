@@ -1,11 +1,16 @@
-﻿public class ChatbotInteraction
-{
-    public int InteractionID { get; set; }
-    public int UserID { get; set; }
-    public string UserMessage { get; set; }
-    public string BotResponse { get; set; }
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
+﻿using System;
+using MentalPeaceGuider.Models; // ensures User class is recognized
 
-    public User User { get; set; }
+namespace MentalPeaceGuider.Models
+{
+    public class ChatbotInteraction
+    {
+        public int InteractionID { get; set; }
+        public int UserID { get; set; }
+        public string UserMessage { get; set; }
+        public string BotResponse { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+        public User User { get; set; }
+    }
 }
- 

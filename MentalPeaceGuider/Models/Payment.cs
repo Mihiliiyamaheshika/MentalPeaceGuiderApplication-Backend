@@ -1,12 +1,18 @@
-﻿public class Payment
-{
-    public int PaymentID { get; set; }
-    public int BookingID { get; set; }
-    public int UserID { get; set; }
-    public decimal Amount { get; set; }
-    public string PaymentStatus { get; set; }
-    public DateTime PaymentDate { get; set; } = DateTime.Now;
+﻿using System;
+using MentalPeaceGuider.Models; // Ensure this points to your User and Booking classes
 
-    public Booking Booking { get; set; }
-    public User User { get; set; }
+namespace MentalPeaceGuider.Models
+{
+    public class Payment
+    {
+        public int PaymentID { get; set; }
+        public int BookingID { get; set; }
+        public int UserID { get; set; }
+        public decimal Amount { get; set; }
+        public string PaymentStatus { get; set; }
+        public DateTime PaymentDate { get; set; } = DateTime.Now;
+
+        public Booking Booking { get; set; }
+        public User User { get; set; }
+    }
 }

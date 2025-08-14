@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-//using MentalPeaceGuider.Models;
+using MentalPeaceGuider.Models; // make sure this is NOT commented out
 
 namespace MentalPeaceGuider.Data
 {
@@ -12,8 +12,17 @@ namespace MentalPeaceGuider.Data
         }
 
         // Link your models to tables
+        public DbSet<User> Users { get; set; }
         public DbSet<AvailableSlot> AvailableSlots { get; set; }
         public DbSet<Booking> Bookings { get; set; }
+        public DbSet<BookingRequest> BookingRequests { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<ImmediateCall> ImmediateCalls { get; set; }
+        public DbSet<ChatbotInteraction> ChatbotInteractions { get; set; }
+        public DbSet<MentalHealthProgress> MentalHealthProgressRecords { get; set; }
+        public DbSet<Counselor> Counselors { get; set; }
+        public DbSet<RescheduleRequest> RescheduleRequests { get; set; }
+        public DbSet<CancelledBooking> CancelledBookings { get; set; }
 
         // Optional: Override OnModelCreating for custom configurations
         protected override void OnModelCreating(ModelBuilder modelBuilder)

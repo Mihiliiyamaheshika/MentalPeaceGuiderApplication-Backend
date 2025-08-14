@@ -1,11 +1,17 @@
-﻿public class ImmediateCall
-{
-    public int CallID { get; set; }
-    public int UserID { get; set; }
-    public int CounselorID { get; set; }
-    public DateTime CallRequestedAt { get; set; } = DateTime.Now;
-    public string Status { get; set; }
+﻿using System;
+using MentalPeaceGuider.Models; // ensures User and Counselor are recognized
 
-    public User User { get; set; }
-    public Counselor Counselor { get; set; }
+namespace MentalPeaceGuider.Models
+{
+    public class ImmediateCall
+    {
+        public int CallID { get; set; }
+        public int UserID { get; set; }
+        public int CounselorID { get; set; }
+        public DateTime CallRequestedAt { get; set; } = DateTime.Now;
+        public string Status { get; set; }
+
+        public User User { get; set; }
+        public Counselor Counselor { get; set; }
+    }
 }
