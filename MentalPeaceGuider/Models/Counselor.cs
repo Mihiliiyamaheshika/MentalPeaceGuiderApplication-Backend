@@ -1,11 +1,15 @@
-﻿using System;
+﻿using MentalPeaceGuider.Models; // ensures related models are recognized
+using System;
 using System.Collections.Generic;
-using MentalPeaceGuider.Models; // ensures related models are recognized
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MentalPeaceGuider.Models
 {
     public class Counselor
     {
+        [Key]
+        [Column("CounselorId")]
         public int CounselorID { get; set; }
         public string Title { get; set; }
         public string FullName { get; set; }

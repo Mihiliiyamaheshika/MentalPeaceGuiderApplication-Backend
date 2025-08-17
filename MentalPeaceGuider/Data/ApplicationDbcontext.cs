@@ -12,7 +12,7 @@ namespace MentalPeaceGuider.Data
         }
 
         // Link your models to tables
-        public DbSet<User> Users { get; set; }
+        public DbSet<Users> Users { get; set; }
         public DbSet<AvailableSlot> AvailableSlots { get; set; }
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<BookingRequest> BookingRequests { get; set; }
@@ -29,6 +29,15 @@ namespace MentalPeaceGuider.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            // Explicitly define primary key
+            modelBuilder.Entity<AvailableSlot>()
+                        .HasKey(a => a.SlotID);
+
+            // You can also configure relationships if needed
+            modelBuilder.Entity<AvailableSlot>()
+                        .HasOne(a => a.Counselor)
+                        .WithMany(c => c.AvailableSlots)
+                        .HasForeignKey(a => a.CounselorID);
             // Example: configure relationships or table names
             // modelBuilder.Entity<Booking>().ToTable("Bookings");
         }
