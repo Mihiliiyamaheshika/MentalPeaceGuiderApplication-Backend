@@ -1,5 +1,4 @@
-﻿using MentalPeaceGuider.Models; // ensures User and Counselor are recognized
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -8,14 +7,26 @@ namespace MentalPeaceGuider.Models
     public class ImmediateCall
     {
         [Key]
-        [Column("CallId")]
         public int CallID { get; set; }
-        public int UserID { get; set; }
-        public int CounselorID { get; set; }
-        public DateTime CallRequestedAt { get; set; } = DateTime.Now;
-        public string Status { get; set; }
 
-        public Users Users { get; set; }
-        public Counselor Counselor { get; set; }
+        [Required]
+        public int UserID { get; set; }
+
+        [Required]
+        public int CounselorID { get; set; }
+
+        [Required]
+        public DateTime CallRequestedAt { get; set; } = DateTime.UtcNow;
+
+        [Required]
+        [MaxLength(50)]
+        public string Status { get; set; }  // Example: "Pending", "Ongoing", "Completed"
+
+        // Navigation properties (optional but useful for relationships)
+        [ForeignKey("UserID")]
+        public virtual Users Users { get; set; }
+
+        [ForeignKey("CounselorID")]
+        public virtual Counselor Counselor { get; set; }
     }
 }

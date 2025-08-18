@@ -19,7 +19,8 @@ namespace MentalPeaceGuider.Data
         public DbSet<Payment> Payments { get; set; }
         public DbSet<ImmediateCall> ImmediateCalls { get; set; }
         public DbSet<ChatbotInteraction> ChatbotInteractions { get; set; }
-        public DbSet<MentalHealthProgress> MentalHealthProgressRecords { get; set; }
+        public DbSet<MentalHealthProgress> MentalHealthProgress { get; set; }
+
         public DbSet<Counselor> Counselors { get; set; }
         public DbSet<RescheduleRequest> RescheduleRequests { get; set; }
         public DbSet<CancelledBooking> CancelledBookings { get; set; }

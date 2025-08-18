@@ -1,5 +1,4 @@
-﻿using MentalPeaceGuider.Models; // ensures User class is recognized
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -8,13 +7,23 @@ namespace MentalPeaceGuider.Models
     public class ChatbotInteraction
     {
         [Key]
-        [Column("InteractionId")]
         public int InteractionID { get; set; }
+
+        [Required]
         public int UserID { get; set; }
+
+        [Required]
+        [MaxLength(1000)]
         public string UserMessage { get; set; }
+
+        [Required]
+        [MaxLength(1000)]
         public string BotResponse { get; set; }
+
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-        public Users Users { get; set; }
+        // Navigation property
+        [ForeignKey("UserID")]
+        public Users User { get; set; }
     }
 }
