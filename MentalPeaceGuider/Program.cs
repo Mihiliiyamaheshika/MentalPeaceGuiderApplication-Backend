@@ -43,6 +43,17 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+// ===== CORS Setup =====
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins("http://localhost:3000") // React frontend URL
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -54,7 +65,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication();  // Must come before UseAuthorization
+// Must come before UseAuthorization
+app.UseCors();              // Enable CORS
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
