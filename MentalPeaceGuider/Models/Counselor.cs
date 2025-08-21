@@ -19,6 +19,8 @@ namespace MentalPeaceGuider.Models
         public string ProfileName { get; set; }
         public string Description { get; set; }
 
+        public string ImageUrl { get; set; }
+
         public ICollection<BookingRequest> BookingRequests { get; set; }
         public ICollection<Booking> Bookings { get; set; }
         public ICollection<ImmediateCall> ImmediateCalls { get; set; }

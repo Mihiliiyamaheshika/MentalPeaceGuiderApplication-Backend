@@ -31,7 +31,8 @@ namespace MentalPeaceGuider.Controllers
                     Gender = c.Gender,
                     Email = c.Email,
                     ProfileName = c.ProfileName,
-                    Description = c.Description
+                    Description = c.Description,
+                    ImageUrl = c.ImageUrl   // ✅ include image URL
                 })
                 .ToListAsync();
         }
@@ -53,7 +54,8 @@ namespace MentalPeaceGuider.Controllers
                 Gender = counselor.Gender,
                 Email = counselor.Email,
                 ProfileName = counselor.ProfileName,
-                Description = counselor.Description
+                Description = counselor.Description,
+                ImageUrl = counselor.ImageUrl   // ✅ include image URL
             };
         }
 
@@ -69,7 +71,8 @@ namespace MentalPeaceGuider.Controllers
                 Email = dto.Email,
                 PasswordHash = dto.Password,
                 ProfileName = dto.ProfileName,
-                Description = dto.Description
+                Description = dto.Description,
+                ImageUrl = dto.ImageUrl   // ✅ save image URL
             };
 
             _context.Counselors.Add(counselor);
@@ -84,7 +87,8 @@ namespace MentalPeaceGuider.Controllers
                 Gender = counselor.Gender,
                 Email = counselor.Email,
                 ProfileName = counselor.ProfileName,
-                Description = counselor.Description
+                Description = counselor.Description,
+                ImageUrl = counselor.ImageUrl   // ✅ return image URL
             };
 
             return CreatedAtAction(nameof(GetCounselor), new { id = counselor.CounselorID }, result);
@@ -104,6 +108,7 @@ namespace MentalPeaceGuider.Controllers
             counselor.Email = dto.Email;
             counselor.ProfileName = dto.ProfileName;
             counselor.Description = dto.Description;
+            counselor.ImageUrl = dto.ImageUrl;   // ✅ update image URL
 
             await _context.SaveChangesAsync();
             return NoContent();

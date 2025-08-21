@@ -9,5 +9,6 @@
         public string Password { get; set; } // plain password, will be hashed before saving
         public string ProfileName { get; set; }
         public string Description { get; set; }
+        public string ImageUrl { get; set; }
     }
 }
