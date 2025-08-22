@@ -4,6 +4,7 @@ using MentalPeaceGuider.DTOs;
 using MentalPeaceGuider.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text;
 
 namespace MentalPeaceGuider.Controllers
 {
@@ -63,13 +64,16 @@ namespace MentalPeaceGuider.Controllers
         [HttpPost]
         public async Task<ActionResult<CounselorDto>> CreateCounselor(CreateCounselorDto dto)
         {
+            // Hash the password before saving
+            string hashedPassword = HashPassword(dto.Password);
+
             var counselor = new Counselor
             {
                 Title = dto.Title,
                 FullName = dto.FullName,
                 Gender = dto.Gender,
                 Email = dto.Email,
-                PasswordHash = dto.Password,
+                PasswordHash = hashedPassword, // use hashed password
                 ProfileName = dto.ProfileName,
                 Description = dto.Description,
                 ImageUrl = dto.ImageUrl   // ✅ save image URL
@@ -92,6 +96,17 @@ namespace MentalPeaceGuider.Controllers
             };
 
             return CreatedAtAction(nameof(GetCounselor), new { id = counselor.CounselorID }, result);
+        }
+
+        // ✅ Add this private method in the same controller
+        private string HashPassword(string password)
+        {
+            using (var sha256 = System.Security.Cryptography.SHA256.Create())
+            {
+                var bytes = Encoding.UTF8.GetBytes(password);
+                var hash = sha256.ComputeHash(bytes);
+                return Convert.ToBase64String(hash);
+            }
         }
 
         // ✅ PUT (Update)

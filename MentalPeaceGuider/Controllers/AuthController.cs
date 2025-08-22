@@ -54,47 +54,94 @@ namespace MentalPeaceGuider.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginUserDto dto)
         {
+            // 1️⃣ Try to find user in Users table
             var user = _context.Users.FirstOrDefault(u => u.Email == dto.Email);
-            if (user == null)
-                return Unauthorized(new { message = "Invalid email or password" });
 
-            // Verify password
-            if (user.PasswordHash != HashPassword(dto.Password))
-                return Unauthorized(new { message = "Invalid email or password" });
-
-            // Generate JWT token
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
-
-            var tokenDescriptor = new SecurityTokenDescriptor
+            if (user != null)
             {
-                Subject = new ClaimsIdentity(new[]
+                if (user.PasswordHash != HashPassword(dto.Password))
+                    return Unauthorized(new { message = "Invalid email or password" });
+
+                // Generate JWT token
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
+
+                var tokenDescriptor = new SecurityTokenDescriptor
                 {
-                    new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                    new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Role, user.Role)
-                }),
-                Expires = DateTime.UtcNow.AddMinutes(Convert.ToDouble(_configuration["Jwt:ExpiresInMinutes"])),
-                Issuer = _configuration["Jwt:Issuer"],
-                Audience = _configuration["Jwt:Audience"],
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
+                    Subject = new ClaimsIdentity(new[]
+                    {
+                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, user.Role)
+            }),
+                    Expires = DateTime.UtcNow.AddMinutes(Convert.ToDouble(_configuration["Jwt:ExpiresInMinutes"])),
+                    Issuer = _configuration["Jwt:Issuer"],
+                    Audience = _configuration["Jwt:Audience"],
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                };
 
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            var jwtToken = tokenHandler.WriteToken(token);
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+                var jwtToken = tokenHandler.WriteToken(token);
 
-            return Ok(new
+                return Ok(new
+                {
+                    token = jwtToken,
+                    user = new
+                    {
+                        user.UserId,
+                        user.FullName,
+                        user.Email,
+                        user.Role
+                    }
+                });
+            }
+
+            // 2️⃣ Try to find counselor in Counselors table
+            var counselor = _context.Counselors.FirstOrDefault(c => c.Email == dto.Email);
+
+            if (counselor != null)
             {
-                token = jwtToken,
-                user = new
+                if (counselor.PasswordHash != HashPassword(dto.Password))
+                    return Unauthorized(new { message = "Invalid email or password" });
+
+                // Generate JWT token for counselor
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
+
+                var tokenDescriptor = new SecurityTokenDescriptor
                 {
-                    user.UserId,
-                    user.FullName,
-                    user.Email,
-                    user.Role
-                }
-            });
+                    Subject = new ClaimsIdentity(new[]
+                    {
+                new Claim(ClaimTypes.NameIdentifier, counselor.CounselorID.ToString()),
+                new Claim(ClaimTypes.Email, counselor.Email),
+                new Claim(ClaimTypes.Role, "counselor")
+            }),
+                    Expires = DateTime.UtcNow.AddMinutes(Convert.ToDouble(_configuration["Jwt:ExpiresInMinutes"])),
+                    Issuer = _configuration["Jwt:Issuer"],
+                    Audience = _configuration["Jwt:Audience"],
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                };
+
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+                var jwtToken = tokenHandler.WriteToken(token);
+
+                return Ok(new
+                {
+                    token = jwtToken,
+                    user = new
+                    {
+                        userId = counselor.CounselorID,
+                        fullName = counselor.FullName,
+                        email = counselor.Email,
+                        role = "counselor"
+                    }
+                });
+            }
+
+            // 3️⃣ If neither found
+            return Unauthorized(new { message = "Invalid email or password" });
         }
+
 
         [HttpGet("users/byrole/{role}")]
         public IActionResult GetUsersByRole(string role)
