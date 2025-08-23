@@ -19,23 +19,29 @@ namespace MentalPeaceGuider.Controllers
             _context = context;
         }
 
-        // ✅ GET all
+        // ✅ GET all counselors
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CounselorDto>>> GetCounselors()
         {
-            return await _context.Counselors
+            var counselors = await _context.Counselors
                 .Select(c => new CounselorDto
                 {
                     CounselorID = c.CounselorID,
-                    Title = c.Title,
-                    FullName = c.FullName,
-                    Gender = c.Gender,
-                    Email = c.Email,
-                    ProfileName = c.ProfileName,
-                    Description = c.Description,
-                    ImageUrl = c.ImageUrl   // ✅ include image URL
+                    Title = c.Title ?? "",
+                    FullName = c.FullName ?? "",
+                    Gender = c.Gender ?? "",
+                    Email = c.Email ?? "",
+                    ProfileName = c.ProfileName ?? "",
+                    Description = c.Description ?? "",
+                    ImageUrl = c.ImageUrl ?? "",
+                    AvailabilityDays = c.AvailabilityDays ?? "" // include availability
                 })
                 .ToListAsync();
+
+            if (!counselors.Any())
+                return NotFound();
+
+            return Ok(counselors);
         }
 
         // ✅ GET by ID
@@ -50,21 +56,21 @@ namespace MentalPeaceGuider.Controllers
             return new CounselorDto
             {
                 CounselorID = counselor.CounselorID,
-                Title = counselor.Title,
-                FullName = counselor.FullName,
-                Gender = counselor.Gender,
-                Email = counselor.Email,
-                ProfileName = counselor.ProfileName,
-                Description = counselor.Description,
-                ImageUrl = counselor.ImageUrl   // ✅ include image URL
+                Title = counselor.Title ?? "",
+                FullName = counselor.FullName ?? "",
+                Gender = counselor.Gender ?? "",
+                Email = counselor.Email ?? "",
+                ProfileName = counselor.ProfileName ?? "",
+                Description = counselor.Description ?? "",
+                ImageUrl = counselor.ImageUrl ?? "",
+                AvailabilityDays = counselor.AvailabilityDays ?? "" // include availability
             };
         }
 
-        // ✅ POST (Create)
+        // ✅ POST (Create) – for admin/system use
         [HttpPost]
         public async Task<ActionResult<CounselorDto>> CreateCounselor(CreateCounselorDto dto)
         {
-            // Hash the password before saving
             string hashedPassword = HashPassword(dto.Password);
 
             var counselor = new Counselor
@@ -73,40 +79,56 @@ namespace MentalPeaceGuider.Controllers
                 FullName = dto.FullName,
                 Gender = dto.Gender,
                 Email = dto.Email,
-                PasswordHash = hashedPassword, // use hashed password
+                PasswordHash = hashedPassword,
                 ProfileName = dto.ProfileName,
                 Description = dto.Description,
-                ImageUrl = dto.ImageUrl   // ✅ save image URL
+                ImageUrl = dto.ImageUrl,
+                AvailabilityDays = dto.AvailabilityDays // handle availability
             };
 
             _context.Counselors.Add(counselor);
             await _context.SaveChangesAsync();
 
-            // return created counselor as DTO
             var result = new CounselorDto
             {
                 CounselorID = counselor.CounselorID,
-                Title = counselor.Title,
-                FullName = counselor.FullName,
-                Gender = counselor.Gender,
-                Email = counselor.Email,
-                ProfileName = counselor.ProfileName,
-                Description = counselor.Description,
-                ImageUrl = counselor.ImageUrl   // ✅ return image URL
+                Title = counselor.Title ?? "",
+                FullName = counselor.FullName ?? "",
+                Gender = counselor.Gender ?? "",
+                Email = counselor.Email ?? "",
+                ProfileName = counselor.ProfileName ?? "",
+                Description = counselor.Description ?? "",
+                ImageUrl = counselor.ImageUrl ?? "",
+                AvailabilityDays = counselor.AvailabilityDays ?? ""
             };
 
             return CreatedAtAction(nameof(GetCounselor), new { id = counselor.CounselorID }, result);
         }
 
-        // ✅ Add this private method in the same controller
-        private string HashPassword(string password)
+        // ✅ POST (Signup) – for counselors
+        [HttpPost("signup")]
+        public async Task<IActionResult> Signup([FromBody] CreateCounselorDto dto)
         {
-            using (var sha256 = System.Security.Cryptography.SHA256.Create())
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var counselor = new Counselor
             {
-                var bytes = Encoding.UTF8.GetBytes(password);
-                var hash = sha256.ComputeHash(bytes);
-                return Convert.ToBase64String(hash);
-            }
+                FullName = dto.FullName,
+                Email = dto.Email,
+                PasswordHash = HashPassword(dto.Password),
+                Title = dto.Title,
+                Gender = dto.Gender,
+                ProfileName = dto.ProfileName,
+                Description = dto.Description,
+                ImageUrl = dto.ImageUrl,
+                AvailabilityDays = string.Join(",", dto.AvailabilityDays) // store as comma-separated string
+            };
+
+            _context.Counselors.Add(counselor);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Counselor registered successfully" });
         }
 
         // ✅ PUT (Update)
@@ -123,7 +145,8 @@ namespace MentalPeaceGuider.Controllers
             counselor.Email = dto.Email;
             counselor.ProfileName = dto.ProfileName;
             counselor.Description = dto.Description;
-            counselor.ImageUrl = dto.ImageUrl;   // ✅ update image URL
+            counselor.ImageUrl = dto.ImageUrl;
+            counselor.AvailabilityDays = dto.AvailabilityDays; // allow updates to availability
 
             await _context.SaveChangesAsync();
             return NoContent();
@@ -140,6 +163,17 @@ namespace MentalPeaceGuider.Controllers
             _context.Counselors.Remove(counselor);
             await _context.SaveChangesAsync();
             return NoContent();
+        }
+
+        // 🔒 Password hashing helper
+        private string HashPassword(string password)
+        {
+            using (var sha256 = System.Security.Cryptography.SHA256.Create())
+            {
+                var bytes = Encoding.UTF8.GetBytes(password);
+                var hash = sha256.ComputeHash(bytes);
+                return Convert.ToBase64String(hash);
+            }
         }
     }
 }

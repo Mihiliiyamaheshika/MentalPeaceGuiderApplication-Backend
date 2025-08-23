@@ -10,6 +10,8 @@
         public string ProfileName { get; set; }
         public string Description { get; set; }
         public string ImageUrl { get; set; }
-        // Notice: No PasswordHash here!
+
+        // ✅ New field for availability days (stored as comma-separated string or JSON)
+        public string AvailabilityDays { get; set; }
     }
 }

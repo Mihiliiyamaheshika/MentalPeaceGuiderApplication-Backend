@@ -11,6 +11,7 @@ namespace MentalPeaceGuider.Models
         [Key]
         [Column("CounselorId")]
         public int CounselorID { get; set; }
+
         public string Title { get; set; }
         public string FullName { get; set; }
         public string Gender { get; set; }
@@ -21,10 +22,12 @@ namespace MentalPeaceGuider.Models
 
         public string ImageUrl { get; set; }
 
+        // ✅ New property for availability
+        public string AvailabilityDays { get; set; }
+
         public ICollection<BookingRequest> BookingRequests { get; set; }
         public ICollection<Booking> Bookings { get; set; }
         public ICollection<ImmediateCall> ImmediateCalls { get; set; }
         public ICollection<AvailableSlot> AvailableSlots { get; set; }
     }
 }
-
