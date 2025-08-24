@@ -2,6 +2,8 @@
 using MentalPeaceGuider.Data;
 using MentalPeaceGuider.Models;
 using MentalPeaceGuider.Dtos;
+using Microsoft.EntityFrameworkCore;
+
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -37,6 +39,7 @@ namespace MentalPeaceGuider.Controllers
                 UserID = dto.UserID,
                 CounselorID = dto.CounselorID,
                 RequestedDateTime = dto.RequestedDateTime,
+                EndDateTime = dto.EndDateTime ?? dto.RequestedDateTime.AddHours(2), // ✅ FIX: set default
                 Message = dto.Message,
                 Status = dto.Status
             };
@@ -56,6 +59,54 @@ namespace MentalPeaceGuider.Controllers
 
             return Ok(request);
         }
+        // GET: api/BookingRequests/user/{userId}
+        [HttpGet("user/{userId}")]
+        public IActionResult GetRequestsByUser(int userId)
+        {
+            var requests = _context.BookingRequests
+                .Where(r => r.UserID == userId)
+                .Select(r => new BookingRequestDto
+                {
+                    RequestID = r.RequestID,
+                    UserID = r.UserID,
+                    CounselorID = r.CounselorID,
+                    RequestedDateTime = r.RequestedDateTime,
+                    Message = r.Message,
+                    Status = r.Status,
+                    CounselorName = r.Counselor != null ? r.Counselor.FullName : null
+                })
+                .ToList();
+
+            if (!requests.Any())
+                return NotFound(new { message = "No booking requests found for this user" });
+
+            return Ok(requests);
+        }
+
+
+        [HttpGet("counselor/{counselorId}")]
+        public async Task<IActionResult> GetCounselorBookings(int counselorId)
+        {
+            var bookings = await _context.BookingRequests
+                .Where(b => b.CounselorID == counselorId)
+                .Select(b => new
+                {
+                    b.RequestID,
+                    b.UserID,
+                    UserName = b.Users.FullName, // assuming navigation property exists
+                    b.CounselorID,
+                    CounselorName = b.Counselor.FullName, // assuming navigation property
+                    RequestedDateTime = b.RequestedDateTime,
+                    EndDateTime = b.EndDateTime ?? b.RequestedDateTime.AddHours(1), // default 1 hour if EndDateTime null
+                    b.Message,
+                    b.Status
+                })
+                .ToListAsync();
+
+            return Ok(bookings);
+        }
+
+
 
         // PUT: api/BookingRequests/{id}
         [HttpPut("{id}")]

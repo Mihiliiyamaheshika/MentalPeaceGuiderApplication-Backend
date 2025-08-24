@@ -3,7 +3,6 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-
 namespace MentalPeaceGuider.Models
 {
     public class BookingRequest
@@ -18,10 +17,14 @@ namespace MentalPeaceGuider.Models
 
         public DateTime RequestedDateTime { get; set; }
 
+        // Add EndDateTime to store the booking end time
+        public DateTime? EndDateTime { get; set; }
+
         public string Message { get; set; }
 
         public string Status { get; set; }
 
+        // Navigation properties
         [ForeignKey("UserID")]
         public Users Users { get; set; }
 

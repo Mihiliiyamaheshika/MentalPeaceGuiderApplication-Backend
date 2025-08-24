@@ -14,7 +14,10 @@ namespace MentalPeaceGuider.Dtos
         [Required]
         public DateTime RequestedDateTime { get; set; }
 
-        public string Message { get; set; }
+        // ✅ New field for End DateTime (optional if not passed, will default later)
+        public DateTime? EndDateTime { get; set; }
+
+        public string? Message { get; set; }  // Nullable to allow empty messages
 
         public string Status { get; set; } = "Pending"; // Default to Pending
     }

@@ -88,10 +88,11 @@ namespace MentalPeaceGuider.Controllers
                     token = jwtToken,
                     user = new
                     {
-                        user.UserId,
-                        user.FullName,
-                        user.Email,
-                        user.Role
+                        UserId = user.UserId,
+                        CounselorId = (int?)null, // ✅ Always include, null for normal users
+                        FullName = user.FullName,
+                        Email = user.Email,
+                        Role = user.Role
                     }
                 });
             }
@@ -130,10 +131,11 @@ namespace MentalPeaceGuider.Controllers
                     token = jwtToken,
                     user = new
                     {
-                        userId = counselor.CounselorID,
-                        fullName = counselor.FullName,
-                        email = counselor.Email,
-                        role = "counselor"
+                        UserId = counselor.CounselorID,   // ✅ Same field name as users
+                        CounselorId = counselor.CounselorID, // ✅ Explicit counselor id
+                        FullName = counselor.FullName,
+                        Email = counselor.Email,
+                        Role = "counselor"
                     }
                 });
             }
