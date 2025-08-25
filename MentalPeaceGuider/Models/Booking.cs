@@ -23,6 +23,17 @@ namespace MentalPeaceGuider.Models
 
         public string Status { get; set; }
 
+        // ✅ New columns for payment tracking
+        public bool IsPaid { get; set; } = false;
+
+        public string PaymentReference { get; set; }
+
+        // ✅ Optional: Timestamps
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+        public DateTime UpdatedAt { get; set; } = DateTime.Now;
+
+        // 🔹 Existing navigation properties
         [ForeignKey("RequestID")]
         public BookingRequest BookingRequest { get; set; }
 

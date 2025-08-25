@@ -61,12 +61,31 @@ namespace MentalPeaceGuider.Controllers
         [HttpGet("{id}")]
         public IActionResult GetBookingById(int id)
         {
-            var booking = _context.Bookings.FirstOrDefault(b => b.BookingID == id);
+            var booking = _context.Bookings
+                .Where(b => b.BookingID == id)
+                .Select(b => new
+                {
+                    b.BookingID,
+                    b.RequestID,
+                    b.UserID,
+                    b.CounselorID,
+                    ScheduledDateTime = b.ScheduledDateTime,
+                    EndDateTime = b.ScheduledDateTime.AddHours(1), // optional end time
+                    b.VideoCallLink,
+                    b.Status,
+                    IsPaid = b.IsPaid,
+                    PaymentReference = b.PaymentReference ?? "", // safe null handling
+                    UserName = b.Users != null ? b.Users.FullName : "", // corrected property
+                    CounselorName = b.Counselor != null ? b.Counselor.FullName : "" // corrected property
+                })
+                .FirstOrDefault();
+
             if (booking == null)
                 return NotFound(new { message = "Booking not found" });
 
             return Ok(booking);
         }
+
 
         // PUT: Update booking
         [HttpPut("{id}")]
@@ -107,6 +126,66 @@ namespace MentalPeaceGuider.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Booking deleted successfully!" });
+        }
+
+        // ------------------- NEW FUNCTIONALITIES -------------------
+
+        // PUT: Confirm Booking
+        [HttpPut("{id}/confirm")]
+        public async Task<IActionResult> ConfirmBooking(int id, [FromBody] string videoCallLink)
+        {
+            var booking = _context.Bookings.FirstOrDefault(b => b.BookingID == id);
+            if (booking == null)
+                return NotFound(new { message = "Booking not found" });
+
+            booking.Status = "Confirmed";
+            booking.VideoCallLink = videoCallLink; // optional
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Booking confirmed successfully!" });
+        }
+
+        // PUT: Mark as Paid
+        [HttpPut("{id}/pay")]
+        public async Task<IActionResult> PayBooking(int id, [FromBody] string paymentReference)
+        {
+            var booking = _context.Bookings.FirstOrDefault(b => b.BookingID == id);
+            if (booking == null)
+                return NotFound(new { message = "Booking not found" });
+
+            booking.IsPaid = true;
+            booking.PaymentReference = paymentReference;
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Payment updated successfully!" });
+        }
+
+        // PUT: Reschedule Booking
+        [HttpPut("{id}/reschedule")]
+        public async Task<IActionResult> RescheduleBooking(int id, [FromBody] System.DateTime newDateTime)
+        {
+            var booking = _context.Bookings.FirstOrDefault(b => b.BookingID == id);
+            if (booking == null)
+                return NotFound(new { message = "Booking not found" });
+
+            booking.ScheduledDateTime = newDateTime;
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Booking rescheduled successfully!" });
+        }
+
+        // PUT: Cancel Booking
+        [HttpPut("{id}/cancel")]
+        public async Task<IActionResult> CancelBooking(int id)
+        {
+            var booking = _context.Bookings.FirstOrDefault(b => b.BookingID == id);
+            if (booking == null)
+                return NotFound(new { message = "Booking not found" });
+
+            booking.Status = "Cancelled";
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Booking cancelled successfully!" });
         }
     }
 }
