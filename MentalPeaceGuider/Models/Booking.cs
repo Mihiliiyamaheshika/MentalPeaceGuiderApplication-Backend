@@ -15,25 +15,25 @@ namespace MentalPeaceGuider.Models
 
         public int UserID { get; set; }
 
-        public int CounselorID { get; set; }
+        public int CounselorID { get; set; }   // make int? if DB allows null
 
         public DateTime ScheduledDateTime { get; set; }
 
-        public string VideoCallLink { get; set; }
+        // ✅ Nullable
+        public string? VideoCallLink { get; set; }
 
-        public string Status { get; set; }
+        // ✅ Always required, so keep non-nullable with default
+        public string Status { get; set; } = string.Empty;
 
-        // ✅ New columns for payment tracking
         public bool IsPaid { get; set; } = false;
 
-        public string PaymentReference { get; set; }
+        // ✅ Nullable
+        public string? PaymentReference { get; set; }
 
-        // ✅ Optional: Timestamps
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
-        // 🔹 Existing navigation properties
         [ForeignKey("RequestID")]
         public BookingRequest BookingRequest { get; set; }
 

@@ -3,6 +3,7 @@ using MentalPeaceGuider.Dtos;
 using MentalPeaceGuider.DTOs;
 using MentalPeaceGuider.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -84,6 +85,20 @@ namespace MentalPeaceGuider.Controllers
                 return NotFound(new { message = "Booking not found" });
 
             return Ok(booking);
+        }
+
+        // GET: api/Bookings/user/5
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<IEnumerable<Booking>>> GetConfirmedBookingsByUser(int userId)
+        {
+            var bookings = await _context.Bookings
+                .Where(b => b.UserID == userId && b.Status == "Confirmed")
+                .ToListAsync();
+
+            if (!bookings.Any())
+                return NotFound("No confirmed bookings found.");
+
+            return Ok(bookings);
         }
 
 

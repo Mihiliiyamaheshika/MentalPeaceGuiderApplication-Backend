@@ -106,6 +106,20 @@ namespace MentalPeaceGuider.Controllers
             return Ok(bookings);
         }
 
+        [HttpPut("{id}/status")]
+        public async Task<IActionResult> UpdateStatus(int id, [FromBody] string status)
+        {
+            var request = await _context.BookingRequests.FindAsync(id);
+            if (request == null)
+                return NotFound();
+
+            request.Status = status; // e.g., "Confirmed"
+            _context.BookingRequests.Update(request);
+            await _context.SaveChangesAsync();
+
+            return Ok(request);
+        }
+
 
 
         // PUT: api/BookingRequests/{id}
