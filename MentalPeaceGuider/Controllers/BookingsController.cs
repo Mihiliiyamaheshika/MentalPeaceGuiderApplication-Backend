@@ -168,12 +168,48 @@ namespace MentalPeaceGuider.Controllers
             if (booking == null)
                 return NotFound(new { message = "Booking not found" });
 
+            // 1️⃣ Mark as paid
             booking.IsPaid = true;
             booking.PaymentReference = paymentReference;
+
+            // 2️⃣ Generate Jitsi link automatically
+            if (string.IsNullOrEmpty(booking.VideoCallLink))
+            {
+                // You can use BookingID as a unique room name
+                string meetingId = $"Booking-{booking.BookingID}-{Guid.NewGuid().ToString().Substring(0, 8)}";
+                string jitsiDomain = "https://meet.jit.si";
+                booking.VideoCallLink = $"{jitsiDomain}/{meetingId}";
+            }
+
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Payment updated successfully!" });
+            return Ok(new
+            {
+                message = "Payment updated successfully!",
+                videoLink = booking.VideoCallLink // optional: return link to frontend
+            });
         }
+
+        // GET: /api/Bookings/videoLink/{requestID}
+        [HttpGet("videoLink/{requestID}")]
+        public IActionResult GetVideoLinkByRequest(int requestID)
+        {
+            // Find the booking safely
+            var booking = _context.Bookings
+                .Where(b => b.RequestID == requestID)
+                .Select(b => new
+                {
+                    videoCallLink = b.VideoCallLink // can be null
+                })
+                .FirstOrDefault();
+
+            if (booking == null)
+                return NotFound(new { message = "Booking not found" });
+
+            return Ok(booking);
+        }
+
+
 
         // PUT: Reschedule Booking
         [HttpPut("{id}/reschedule")]
