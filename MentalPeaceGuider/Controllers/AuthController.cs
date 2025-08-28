@@ -89,7 +89,7 @@ namespace MentalPeaceGuider.Controllers
                     user = new
                     {
                         UserId = user.UserId,
-                        CounselorId = (int?)null, // ✅ Always include, null for normal users
+                        CounselorId = (int?)null, // Always include, null for normal users
                         FullName = user.FullName,
                         Email = user.Email,
                         Role = user.Role
@@ -97,7 +97,7 @@ namespace MentalPeaceGuider.Controllers
                 });
             }
 
-            // 2️⃣ Try to find counselor in Counselors table
+            //  Try to find counselor in Counselors table
             var counselor = _context.Counselors.FirstOrDefault(c => c.Email == dto.Email);
 
             if (counselor != null)
@@ -131,8 +131,8 @@ namespace MentalPeaceGuider.Controllers
                     token = jwtToken,
                     user = new
                     {
-                        UserId = counselor.CounselorID,   // ✅ Same field name as users
-                        CounselorId = counselor.CounselorID, // ✅ Explicit counselor id
+                        UserId = counselor.CounselorID,   // Same field name as users
+                        CounselorId = counselor.CounselorID, // Explicit counselor id
                         FullName = counselor.FullName,
                         Email = counselor.Email,
                         Role = "counselor"

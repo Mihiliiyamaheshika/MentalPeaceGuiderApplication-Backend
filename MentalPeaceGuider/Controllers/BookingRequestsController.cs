@@ -20,7 +20,7 @@ namespace MentalPeaceGuider.Controllers
             _context = context;
         }
 
-        // POST: api/BookingRequests
+        // POST api/BookingRequests
         [HttpPost]
         public async Task<IActionResult> CreateRequest([FromBody] CreateBookingRequestDto dto)
         {
@@ -59,7 +59,7 @@ namespace MentalPeaceGuider.Controllers
 
             return Ok(request);
         }
-        // GET: api/BookingRequests/user/{userId}
+        // GET api/BookingRequests/user/{userId}
         [HttpGet("user/{userId}")]
         public IActionResult GetRequestsByUser(int userId)
         {
@@ -93,9 +93,9 @@ namespace MentalPeaceGuider.Controllers
                 {
                     b.RequestID,
                     b.UserID,
-                    UserName = b.Users.FullName, // assuming navigation property exists
+                    UserName = b.Users.FullName, // navigation property exists
                     b.CounselorID,
-                    CounselorName = b.Counselor.FullName, // assuming navigation property
+                    CounselorName = b.Counselor.FullName, // navigation property
                     RequestedDateTime = b.RequestedDateTime,
                     EndDateTime = b.EndDateTime ?? b.RequestedDateTime.AddHours(1), // default 1 hour if EndDateTime null
                     b.Message,

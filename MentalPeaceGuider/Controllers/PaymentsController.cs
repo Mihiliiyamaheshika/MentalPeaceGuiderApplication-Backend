@@ -36,7 +36,7 @@ namespace MentalPeaceGuider.Controllers
             return Ok(payments);
         }
 
-        // GET: api/Payments/5
+        // GET: api/Payments
         [HttpGet("{id}")]
         public async Task<ActionResult<PaymentDto>> GetPayment(int id)
         {
@@ -87,7 +87,7 @@ namespace MentalPeaceGuider.Controllers
             return CreatedAtAction(nameof(GetPayment), new { id = payment.PaymentID }, result);
         }
 
-        // PUT: api/Payments/5
+        // PUT: api/Payments
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdatePayment(int id, UpdatePaymentDto dto)
         {
@@ -108,7 +108,7 @@ namespace MentalPeaceGuider.Controllers
             return NoContent();
         }
 
-        // DELETE: api/Payments/5
+        // DELETE: api/Payments
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePayment(int id)
         {

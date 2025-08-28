@@ -13,7 +13,7 @@ namespace MentalPeaceGuider.Models
         [ForeignKey("Booking")]
         public int BookingID { get; set; }
 
-        public string CancelledBy { get; set; }   // e.g., "User" / "Counselor" / "Admin"
+        public string CancelledBy { get; set; }   // "User" / "Counselor" / "Admin"
         public string Reason { get; set; }
         public DateTime CancelledAt { get; set; }
 

@@ -15,19 +15,19 @@ namespace MentalPeaceGuider.Models
 
         public int UserID { get; set; }
 
-        public int CounselorID { get; set; }   // make int? if DB allows null
+        public int CounselorID { get; set; }   
 
         public DateTime ScheduledDateTime { get; set; }
 
-        // ✅ Nullable
+        // Nullable
         public string? VideoCallLink { get; set; }
 
-        // ✅ Always required, so keep non-nullable with default
+        // Always required
         public string Status { get; set; } = string.Empty;
 
         public bool IsPaid { get; set; } = false;
 
-        // ✅ Nullable
+        // Nullable
         public string? PaymentReference { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;

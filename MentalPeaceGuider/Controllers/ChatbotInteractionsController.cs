@@ -35,7 +35,7 @@ namespace MentalPeaceGuider.Controllers
             return Ok(interactions);
         }
 
-        // GET: api/ChatbotInteractions/5
+        // GET: api/ChatbotInteractions
         [HttpGet("{id}")]
         public async Task<ActionResult<ChatbotInteractionDto>> GetById(int id)
         {

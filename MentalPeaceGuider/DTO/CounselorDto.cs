@@ -11,7 +11,7 @@
         public string Description { get; set; }
         public string ImageUrl { get; set; }
 
-        // ✅ New field for availability days (stored as comma-separated string or JSON)
+        //New field for availability days (stored as comma-separated string or JSON)
         public string AvailabilityDays { get; set; }
     }
 }

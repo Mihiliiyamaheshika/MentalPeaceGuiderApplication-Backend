@@ -10,7 +10,7 @@
         public string Description { get; set; }
         public string ImageUrl { get; set; }
 
-        // ✅ New property to update availability (e.g. "Monday,Tuesday,Friday")
+        //New property to update availability ( "Monday,Tuesday,Friday")
         public string AvailabilityDays { get; set; }
     }
 }

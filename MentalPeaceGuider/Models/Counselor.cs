@@ -22,7 +22,7 @@ namespace MentalPeaceGuider.Models
 
         public string ImageUrl { get; set; }
 
-        // ✅ New property for availability
+        // New property for availability
         public string AvailabilityDays { get; set; }
 
         public ICollection<BookingRequest> BookingRequests { get; set; }

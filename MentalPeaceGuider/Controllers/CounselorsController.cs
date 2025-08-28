@@ -19,7 +19,7 @@ namespace MentalPeaceGuider.Controllers
             _context = context;
         }
 
-        // ✅ GET all counselors
+        // GET all counselors
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CounselorDto>>> GetCounselors()
         {
@@ -44,7 +44,7 @@ namespace MentalPeaceGuider.Controllers
             return Ok(counselors);
         }
 
-        // ✅ GET by ID
+        //GET by ID
         [HttpGet("{id}")]
         public async Task<ActionResult<CounselorDto>> GetCounselor(int id)
         {
@@ -67,7 +67,7 @@ namespace MentalPeaceGuider.Controllers
             };
         }
 
-        // ✅ POST (Create) – for admin/system use
+        //POST (Create) – for admin/system use
         [HttpPost]
         public async Task<ActionResult<CounselorDto>> CreateCounselor(CreateCounselorDto dto)
         {
@@ -105,7 +105,7 @@ namespace MentalPeaceGuider.Controllers
             return CreatedAtAction(nameof(GetCounselor), new { id = counselor.CounselorID }, result);
         }
 
-        // ✅ POST (Signup) – for counselors
+        // POST (Signup) – for counselors
         [HttpPost("signup")]
         public async Task<IActionResult> Signup([FromBody] CreateCounselorDto dto)
         {
@@ -131,7 +131,7 @@ namespace MentalPeaceGuider.Controllers
             return Ok(new { message = "Counselor registered successfully" });
         }
 
-        // ✅ PUT (Update)
+        // PUT (Update)
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCounselor(int id, UpdateCounselorDto dto)
         {
@@ -152,7 +152,7 @@ namespace MentalPeaceGuider.Controllers
             return NoContent();
         }
 
-        // ✅ DELETE
+        // DELETE
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCounselor(int id)
         {
@@ -165,7 +165,7 @@ namespace MentalPeaceGuider.Controllers
             return NoContent();
         }
 
-        // 🔒 Password hashing helper
+        // Password hashing
         private string HashPassword(string password)
         {
             using (var sha256 = System.Security.Cryptography.SHA256.Create())

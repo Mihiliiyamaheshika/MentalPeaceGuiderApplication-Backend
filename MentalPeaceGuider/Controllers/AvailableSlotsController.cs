@@ -18,7 +18,7 @@ namespace MentalPeaceGuider.Controllers
             _context = context;
         }
 
-        // ✅ Add a new slot
+        // Add a new slot
         [HttpPost("add")]
         public async Task<IActionResult> AddSlot([FromBody] AddSlotDto dto)
         {
@@ -35,7 +35,7 @@ namespace MentalPeaceGuider.Controllers
             return Ok(new { message = "Slot added successfully!" });
         }
 
-        // ✅ Get slots by counselor
+        //Get slots by counselor
         [HttpGet("counselor/{counselorId}")]
         public IActionResult GetSlotsByCounselor(int counselorId)
         {
@@ -46,7 +46,7 @@ namespace MentalPeaceGuider.Controllers
             return Ok(slots);
         }
 
-        // ✅ Update a slot
+        //Update a slot
         [HttpPut("update")]
         public async Task<IActionResult> UpdateSlot([FromBody] UpdateSlotDto dto)
         {
@@ -61,7 +61,7 @@ namespace MentalPeaceGuider.Controllers
             return Ok(new { message = "Slot updated successfully!" });
         }
 
-        // ✅ Delete a slot
+        // Delete a slot
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteSlot(int id)
         {

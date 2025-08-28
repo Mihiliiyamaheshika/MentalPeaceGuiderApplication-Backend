@@ -7,17 +7,17 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Read connection string from appsettings.json
+// Connection string from appsettings.json
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-// Register your DbContext with SQL Server
+// Register DbContext with SQL Server
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 // Add services to the container.
 builder.Services.AddControllers();
 
-// Configure Swagger/OpenAPI
+// Configure Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -48,7 +48,7 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins("http://localhost:3000", "http://localhost:3001") // add all frontend URLs
+        policy.WithOrigins("http://localhost:3000", "http://localhost:3001") // all frontend URLs
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
@@ -66,7 +66,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 // Must come before UseAuthorization
-app.UseCors();              // Enable CORS
+app.UseCors();             
 app.UseAuthentication();
 app.UseAuthorization();
 

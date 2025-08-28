@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MentalPeaceGuider.Models; // make sure this is NOT commented out
+using MentalPeaceGuider.Models; 
 
 namespace MentalPeaceGuider.Data
 {
@@ -11,7 +11,7 @@ namespace MentalPeaceGuider.Data
         {
         }
 
-        // Link your models to tables
+        // Link models to tables
         public DbSet<Users> Users { get; set; }
         public DbSet<AvailableSlot> AvailableSlots { get; set; }
         public DbSet<Booking> Bookings { get; set; }
@@ -25,7 +25,7 @@ namespace MentalPeaceGuider.Data
         public DbSet<RescheduleRequest> RescheduleRequests { get; set; }
         public DbSet<CancelledBooking> CancelledBookings { get; set; }
 
-        // Optional: Override OnModelCreating for custom configurations
+        //  Override OnModelCreating for custom configurations
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -34,13 +34,12 @@ namespace MentalPeaceGuider.Data
             modelBuilder.Entity<AvailableSlot>()
                         .HasKey(a => a.SlotID);
 
-            // You can also configure relationships if needed
+            // Configure relationships
             modelBuilder.Entity<AvailableSlot>()
                         .HasOne(a => a.Counselor)
                         .WithMany(c => c.AvailableSlots)
                         .HasForeignKey(a => a.CounselorID);
-            // Example: configure relationships or table names
-            // modelBuilder.Entity<Booking>().ToTable("Bookings");
+           
         }
     }
 }

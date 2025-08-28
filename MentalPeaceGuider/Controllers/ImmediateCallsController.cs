@@ -72,7 +72,7 @@ namespace MentalPeaceGuider.Controllers
                     Status = call.Status
                 }).ToListAsync();
         }
-        // ✅ GET: api/ImmediateCalls/5 (now shows parameter clearly in Swagger)
+        // GET: api/ImmediateCalls/5 (now shows parameter clearly in Swagger)
         [HttpGet("{id}")]
         public async Task<ActionResult<ImmediateCallReadDto>> GetImmediateCall([FromRoute] int id)
         {

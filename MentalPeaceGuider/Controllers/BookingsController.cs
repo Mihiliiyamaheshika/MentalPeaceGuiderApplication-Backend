@@ -186,7 +186,7 @@ namespace MentalPeaceGuider.Controllers
             return Ok(new
             {
                 message = "Payment updated successfully!",
-                videoLink = booking.VideoCallLink // optional: return link to frontend
+                videoLink = booking.VideoCallLink 
             });
         }
 

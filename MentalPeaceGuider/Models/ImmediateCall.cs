@@ -20,9 +20,9 @@ namespace MentalPeaceGuider.Models
 
         [Required]
         [MaxLength(50)]
-        public string Status { get; set; }  // Example: "Pending", "Ongoing", "Completed"
+        public string Status { get; set; }  //  "Pending", "Ongoing", "Completed"
 
-        // Navigation properties (optional but useful for relationships)
+        // Navigation properties 
         [ForeignKey("UserID")]
         public virtual Users Users { get; set; }
 

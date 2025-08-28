@@ -44,7 +44,7 @@ namespace MentalPeaceGuider.Controllers
             return Ok(new { message = "Cancelled booking created successfully!", cancelID = cancelledBooking.CancelID });
         }
 
-        // GET: api/CancelledBookings
+        // GET api/CancelledBookings
         [HttpGet]
         public async Task<IActionResult> GetAllCancelledBookings()
         {

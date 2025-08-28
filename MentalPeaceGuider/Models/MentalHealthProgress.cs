@@ -16,7 +16,7 @@ namespace MentalPeaceGuider.Models
         public DateTime DateRecorded { get; set; } = DateTime.Now;
 
         [Required]
-        [Range(1, 10)] // Example: Mood scale 1–10
+        [Range(1, 10)] 
         public int MoodLevel { get; set; }
 
         [MaxLength(500)]

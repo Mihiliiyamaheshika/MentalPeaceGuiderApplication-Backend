@@ -7,6 +7,6 @@
         public int CounselorID { get; set; }
         public DateTime ScheduledDateTime { get; set; }
         public string VideoCallLink { get; set; }
-        public string Status { get; set; } // e.g., "Scheduled", "Completed", "Cancelled"
+        public string Status { get; set; } //"Scheduled", "Completed", "Cancelled"
     }
 }

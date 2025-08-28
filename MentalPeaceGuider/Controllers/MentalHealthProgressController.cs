@@ -35,7 +35,7 @@ namespace MentalPeaceGuider.Controllers
             return Ok(progressList);
         }
 
-        // GET: api/MentalHealthProgress/5
+        // GET: api/MentalHealthProgress
         [HttpGet("{id}")]
         public async Task<ActionResult<MentalHealthProgressDto>> GetById(int id)
         {
